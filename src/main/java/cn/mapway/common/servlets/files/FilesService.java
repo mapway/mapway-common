@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 import java.io.File;
@@ -21,34 +24,46 @@ import org.nutz.lang.random.R;
 
 
 /**
- * 文件上传服务类
- * 
- * @author zhangjianshe
+ * 文件上传服务类.
  *
+ * @author zhangjianshe
  */
 public class FilesService {
 
+	/** The Constant SUPPORT_FIELS. */
 	private final static String SUPPORT_FIELS = "SUPPORT_FIELS";
 
+	/** The support file formats. */
 	private static List<String> supportFileFormats;
 
+	/** The image types. */
 	private String[] imageTypes;
 
+	/** The properties. */
 	private FileUploadProperties properties;
 
+	/**
+	 * Instantiates a new files service.
+	 */
 	public FilesService() {
 		imageTypes = Lang.array("png", "jpg", "jpeg", "bmp", "gif");
 	}
 
 	/**
 	 * 设置文件上传属性.
-	 * 
+	 *
 	 * @param p
+	 *            the new properties
 	 */
 	public void setProperties(FileUploadProperties p) {
 		properties = p;
 	}
 
+	/**
+	 * Gets the support format.
+	 *
+	 * @return the support format
+	 */
 	public synchronized List<String> getSupportFormat() {
 		if (supportFileFormats == null) {
 
@@ -74,16 +89,24 @@ public class FilesService {
 
 	/**
 	 * 保存用户上传的文件.
-	 * 
+	 *
+	 * @param tag
+	 *            the tag
 	 * @param extra
-	 * @param relPath2
+	 *            the extra
+	 * @param relPath
+	 *            the rel path
 	 * @param randomName
+	 *            the random name
 	 * @param upfile
+	 *            the upfile
 	 * @param request
+	 *            the request
 	 * @param response
-	 * @return
-	 * @throws CodeException
+	 *            the response
+	 * @return the file upload resp
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public FileUploadResp saveRequestFile(String tag, String extra, String relPath, String randomName, FileItem upfile,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -150,19 +173,21 @@ public class FilesService {
 
 	/**
 	 * 判断是不是图片.
-	 * 
+	 *
 	 * @param fileExtension
-	 * @return
+	 *            the file extension
+	 * @return true, if is image
 	 */
 	public boolean isImage(String fileExtension) {
 		return Lang.contains(imageTypes, fileExtension);
 	}
 
 	/**
-	 * 获取原始文件名
-	 * 
+	 * 获取原始文件名.
+	 *
 	 * @param upfile
-	 * @return
+	 *            the upfile
+	 * @return the string
 	 */
 	private String extractOrigionName(FileItem upfile) {
 		if (upfile == null) {
@@ -183,15 +208,18 @@ public class FilesService {
 		return targetName;
 	}
 
+	/** The Constant SESSION_UPLOAD_INFORMATION. */
 	private final static String SESSION_UPLOAD_INFORMATION = "SESSION_UPLOAD_INFORMATION";
 
+	/** The Constant REQUEST_TAG. */
 	public static final String REQUEST_TAG = "tag";
 
 	/**
-	 * 获取Session 中的上传监听器,每个Session保存一个
-	 * 
-	 * @param request
-	 * @return
+	 * 获取Session 中的上传监听器,每个Session保存一个.
+	 *
+	 * @param session
+	 *            the session
+	 * @return the session listener
 	 */
 	public static synchronized Map<String, RequestFileUploadListener> getSessionListener(HttpSession session) {
 
@@ -209,9 +237,12 @@ public class FilesService {
 
 	/**
 	 * 获取Request中对应的上传监听器.
-	 * 
+	 *
+	 * @param session
+	 *            the session
 	 * @param tag
-	 * @return
+	 *            the tag
+	 * @return the request file upload listener
 	 */
 	public static RequestFileUploadListener findUploadListener(HttpSession session, String tag) {
 		if (!Strings.isBlank(tag)) {
@@ -223,9 +254,11 @@ public class FilesService {
 
 	/**
 	 * 移除Session中的监听器.
-	 * 
+	 *
 	 * @param session
+	 *            the session
 	 * @param tag
+	 *            the tag
 	 */
 	public static void removeUploadListener(HttpSession session, String tag) {
 		if (!Strings.isBlank(tag)) {

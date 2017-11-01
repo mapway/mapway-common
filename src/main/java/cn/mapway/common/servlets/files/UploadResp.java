@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 import java.util.ArrayList;
@@ -13,8 +16,12 @@ import cn.mapway.common.apis.BaseResp;
  */
 public class UploadResp extends BaseResp {
 
+	/** The files. */
 	public List<FileUploadResp> files;
 
+	/**
+	 * Instantiates a new upload resp.
+	 */
 	public UploadResp() {
 		files = new ArrayList<FileUploadResp>();
 	}

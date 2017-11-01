@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 /**
@@ -7,14 +10,16 @@ package cn.mapway.common.servlets.files;
  */
 public class FileUploadResp {
 
+	/** The ret code. */
 	public Integer retCode;
 
+	/** The msg. */
 	public String msg;
 
 	/**
 	 * 设置接口调用成功.
-	 * 
-	 * @return
+	 *
+	 * @return the file upload resp
 	 */
 	public FileUploadResp ok() {
 		return ok("");
@@ -22,23 +27,23 @@ public class FileUploadResp {
 
 	/**
 	 * 设置接口调用成功.
-	 * 
+	 *
 	 * @param message
 	 *            成功的消息
-	 * @return
+	 * @return the file upload resp
 	 */
 	public FileUploadResp ok(String message) {
 		return fail(0, message);
 	}
 
 	/**
-	 * 设置接口调用错误
-	 * 
+	 * 设置接口调用错误.
+	 *
 	 * @param code
 	 *            错误代码.
 	 * @param message
 	 *            错误消息.
-	 * @return
+	 * @return the file upload resp
 	 */
 	public FileUploadResp fail(int code, String message) {
 		retCode = code;
@@ -64,5 +69,6 @@ public class FileUploadResp {
 	/** 是否是图片. */
 	public Boolean isPicture;
 
+	/** The icon. */
 	public String icon;
 }

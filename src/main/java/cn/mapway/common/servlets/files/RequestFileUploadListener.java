@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 import java.util.HashMap;
@@ -8,19 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.ProgressListener;
 
 /**
- * 每个请求的上传监听器
- * 
- * @author zhangjianshe
+ * 每个请求的上传监听器.
  *
+ * @author zhangjianshe
  */
 public class RequestFileUploadListener implements ProgressListener {
 
+	/** The data. */
 	private Map<Integer, FileUploadState> data;
 
+	/**
+	 * Instantiates a new request file upload listener.
+	 */
 	public RequestFileUploadListener() {
 		data = new HashMap<Integer, FileUploadState>();
 	}
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	public Map<Integer, FileUploadState> getData() {
 		return data;
 	}

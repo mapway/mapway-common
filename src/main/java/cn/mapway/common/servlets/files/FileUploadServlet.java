@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 import java.io.File;
@@ -41,38 +44,41 @@ import cn.mapway.common.resources.Scans;
  */
 public class FileUploadServlet extends HttpServlet {
 
+	/** The Constant log. */
 	public static final Log log = Logs.getLog(FileUploadServlet.class);
 
-	/**
-	 * 文件访问前缀
-	 */
+	/** 文件访问前缀. */
 	public static final String PARA_PREFIX = "PARA_PREFIX";
-	/**
-	 * 文件存储路径
-	 */
+	
+	/** 文件存储路径. */
 	public static final String PARA_REPOSITORY = "PARA_REPOSITORY";
-	/**
-	 * 文件支持格式
-	 */
+	
+	/** 文件支持格式. */
 	public static final String PARA_SUPPORT_FORMAT = "PARA_SUPPORT_FORMAT";
 
-	/**
-	 * 文件服务类
-	 */
+	/** 文件服务类. */
 	FilesService fileService;
-	/**
-	 * 超过此值将文件保存到临时目录中，否则保存在内存中
-	 */
+	
+	/** 超过此值将文件保存到临时目录中，否则保存在内存中. */
 	private int SIZE_THRESHOLD = 4 * 1024 * 1204;
-	/**
-	 * 临时文件夹路径
-	 */
+	
+	/** 临时文件夹路径. */
 	private String TEMP_REPOSITORY = "/tmp";
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 查询上传状态
+	 * 查询上传状态.
+	 *
+	 * @param request
+	 *            the request
+	 * @param resp
+	 *            the resp
+	 * @throws ServletException
+	 *             the servlet exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
@@ -101,11 +107,14 @@ public class FileUploadServlet extends HttpServlet {
 	}
 
 	/**
-	 * 查询样式信息
-	 * 
+	 * 查询样式信息.
+	 *
 	 * @param request
+	 *            the request
 	 * @param response
+	 *            the response
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private void queryCss(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		byte[] data = Scans.readBinResource(FileUploadServlet.class.getPackage().getName(), "uploader.css");
@@ -116,11 +125,14 @@ public class FileUploadServlet extends HttpServlet {
 	}
 
 	/**
-	 * 輸出Javascript
-	 * 
+	 * 輸出Javascript.
+	 *
 	 * @param request
-	 * @param resp
+	 *            the request
+	 * @param response
+	 *            the response
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private void queryJavascript(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		byte[] data = Scans.readBinResource(FileUploadServlet.class.getPackage().getName(), "uploader.js");
@@ -130,6 +142,16 @@ public class FileUploadServlet extends HttpServlet {
 		Streams.write(response.getOutputStream(), data);
 	}
 
+	/**
+	 * Query usage.
+	 *
+	 * @param request
+	 *            the request
+	 * @param resp
+	 *            the resp
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private void queryUsage(HttpServletRequest request, HttpServletResponse resp) throws IOException {
 		String usage = "GET 查询信息\r\n";
 		usage += "/state?tag=0000 查询文件上传状态\r\n";
@@ -142,12 +164,32 @@ public class FileUploadServlet extends HttpServlet {
 
 	}
 
+	/**
+	 * Query file icon.
+	 *
+	 * @param request
+	 *            the request
+	 * @param resp
+	 *            the resp
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private void queryFileIcon(HttpServletRequest request, HttpServletResponse resp) throws IOException {
 		String p = parseQuery(request, "ext", "");
 		byte[] data = Scans.readBinResource(FileUploadServlet.class.getPackage().getName() + ".icons", p + ".png");
 		Streams.write(resp.getOutputStream(), data);
 	}
 
+	/**
+	 * Query file data.
+	 *
+	 * @param request
+	 *            the request
+	 * @param resp
+	 *            the resp
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private void queryFileData(HttpServletRequest request, HttpServletResponse resp) throws IOException {
 		String p = parseQuery(request, "path", "");
 		// 输出文件
@@ -159,11 +201,16 @@ public class FileUploadServlet extends HttpServlet {
 	}
 
 	/**
-	 * 输出文件数据
-	 * 
+	 * 输出文件数据.
+	 *
 	 * @param request
-	 * @param resp
+	 *            the request
+	 * @param response
+	 *            the response
+	 * @param path
+	 *            the path
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private void outputFile(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
 
@@ -212,10 +259,13 @@ public class FileUploadServlet extends HttpServlet {
 
 	/**
 	 * 输出出错消息.
-	 * 
+	 *
 	 * @param response
+	 *            the response
 	 * @param msg
+	 *            the msg
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private void outputError(HttpServletResponse response, String msg) throws IOException {
 
@@ -231,10 +281,13 @@ public class FileUploadServlet extends HttpServlet {
 
 	/**
 	 * 查询文件上传状态.
-	 * 
+	 *
 	 * @param request
+	 *            the request
 	 * @param resp
+	 *            the resp
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private void queryFileUploadState(HttpServletRequest request, HttpServletResponse resp) throws IOException {
 		FileUploadStateResp r = new FileUploadStateResp();
@@ -269,7 +322,16 @@ public class FileUploadServlet extends HttpServlet {
 	}
 
 	/**
-	 * 上传文件
+	 * 上传文件.
+	 *
+	 * @param request
+	 *            the request
+	 * @param resp
+	 *            the resp
+	 * @throws ServletException
+	 *             the servlet exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
@@ -328,14 +390,19 @@ public class FileUploadServlet extends HttpServlet {
 		Streams.write(resp.getOutputStream(), Lang.ins(Json.toJson(r)));
 	}
 
+	/** The properties. */
 	FileUploadProperties properties;
 
 	/**
-	 * 查询输入参数,并提供缺省返回值
-	 * 
+	 * 查询输入参数,并提供缺省返回值.
+	 *
+	 * @param request
+	 *            the request
 	 * @param key
+	 *            the key
 	 * @param defaultValue
-	 * @return
+	 *            the default value
+	 * @return the string
 	 */
 	private String parseQuery(HttpServletRequest request, String key, String defaultValue) {
 		if (Strings.isBlank(key)) {
@@ -349,6 +416,9 @@ public class FileUploadServlet extends HttpServlet {
 		return v;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
+	 */
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);

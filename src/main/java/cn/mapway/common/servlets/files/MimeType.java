@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.servlets.files;
 
 import java.awt.Font;
@@ -12,19 +15,24 @@ import org.nutz.img.Images;
 import org.nutz.lang.Strings;
 
 /**
- * Mimetype
- * 
- * @author zhangjianshe
+ * Mimetype.
  *
+ * @author zhangjianshe
  */
 public class MimeType {
 
+	/** The Constant OCTET. */
 	private static final String OCTET = "application/octet-stream";
 
+	/** The instance. */
 	private static MimeType INSTANCE;
 
+	/** The mapper. */
 	private Map<String, MimeTypeData> mapper;
 
+	/**
+	 * Instantiates a new mime type.
+	 */
 	protected MimeType() {
 		mapper = new HashMap<String, MimeTypeData>();
 		mapper.put("001", new MimeTypeData("application/x-001", "001.png"));
@@ -377,6 +385,11 @@ public class MimeType {
 		mapper.put("gz", new MimeTypeData(OCTET, "gz.png"));
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @return the mime type
+	 */
 	public static synchronized MimeType get() {
 		if (INSTANCE == null) {
 			INSTANCE = new MimeType();
@@ -386,9 +399,10 @@ public class MimeType {
 
 	/**
 	 * 根据文件扩展名 查找文件的MIME类型.
-	 * 
+	 *
 	 * @param fileExtension
-	 * @return
+	 *            the file extension
+	 * @return the string
 	 */
 	public String find(String fileExtension) {
 		if (Strings.isBlank(fileExtension)) {
@@ -402,6 +416,12 @@ public class MimeType {
 		return v.mime;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 */
 	public static void main(String[] args) {
 
 		File d = new File("d:\\res");

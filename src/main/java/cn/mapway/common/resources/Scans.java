@@ -1,3 +1,6 @@
+/*
+ * mapway.cn author by zhangjianshe@gmail.com
+ */
 package cn.mapway.common.resources;
 
 import java.io.File;
@@ -18,17 +21,23 @@ import org.nutz.lang.Streams;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+/**
+ * The Class Scans.
+ */
 public class Scans {
 
+  /** The log. */
   private static Log log = Logs.getLog(Scans.class);
 
   /**
-   * 读取二进制资源
-   * 
-   * @param packageName
-   * @param resName
-   * @return
-   */
+	 * 读取二进制资源.
+	 *
+	 * @param packageName
+	 *            the package name
+	 * @param resName
+	 *            the res name
+	 * @return the byte[]
+	 */
   public static byte[] readBinResource(String packageName, String resName) {
     String src = packageName.replace('.', '/');
     if (src.length() > 0) {
@@ -66,11 +75,14 @@ public class Scans {
   }
 
   /**
-   * 读取资源内容
-   * 
-   * @param res
-   * @return
-   */
+	 * 读取资源内容.
+	 *
+	 * @param packageName
+	 *            the package name
+	 * @param resName
+	 *            the res name
+	 * @return the string
+	 */
   public static String readResource(String packageName, String resName) {
     String src = packageName.replace('.', '/');
     if (src.length() > 0) {
@@ -110,13 +122,16 @@ public class Scans {
   }
 
   /**
-   * 正规化资源读取
-   * 
-   * @param pacakgeName 包名
-   * @param fileName 文件名
-   * @return
-   * @throws IOException
-   */
+	 * 正规化资源读取.
+	 *
+	 * @param packageName
+	 *            the package name
+	 * @param fileName
+	 *            文件名
+	 * @return the byte[]
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
   private static byte[] innerReadResource(String packageName, String fileName) throws IOException {
 
     // 定义一个枚举的集合 并进行循环来处理这个目录下的things
@@ -158,11 +173,12 @@ public class Scans {
   }
 
   /**
-   * 从包package中获取所有的Class
-   * 
-   * @param pack
-   * @return
-   */
+	 * 从包package中获取所有的Class.
+	 *
+	 * @param pack
+	 *            the pack
+	 * @return the classes
+	 */
   public static Set<Class<?>> getClasses(String pack) {
 
     // 第一个class类的集合
@@ -247,13 +263,17 @@ public class Scans {
   }
 
   /**
-   * 以文件的形式来获取包下的所有Class
-   * 
-   * @param packageName
-   * @param packagePath
-   * @param recursive
-   * @param classes
-   */
+	 * 以文件的形式来获取包下的所有Class.
+	 *
+	 * @param packageName
+	 *            the package name
+	 * @param packagePath
+	 *            the package path
+	 * @param recursive
+	 *            the recursive
+	 * @param classes
+	 *            the classes
+	 */
   public static void findAndAddClassesInPackageByFile(String packageName, String packagePath,
       final boolean recursive, Set<Class<?>> classes) {
     // 获取此包的目录 建立一个File
