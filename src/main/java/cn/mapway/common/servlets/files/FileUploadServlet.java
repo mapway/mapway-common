@@ -30,11 +30,13 @@ import org.nutz.lang.Files;
 import org.nutz.lang.Lang;
 import org.nutz.lang.Streams;
 import org.nutz.lang.Strings;
+import org.nutz.lang.Xmls;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import cn.mapway.common.apis.BaseResp;
 import cn.mapway.common.resources.Scans;
+import cn.mapway.common.tools.Markdowns;
 
 /**
  * 文件上传Servlet.
@@ -49,19 +51,19 @@ public class FileUploadServlet extends HttpServlet {
 
 	/** 文件访问前缀. */
 	public static final String PARA_PREFIX = "PARA_PREFIX";
-	
+
 	/** 文件存储路径. */
 	public static final String PARA_REPOSITORY = "PARA_REPOSITORY";
-	
+
 	/** 文件支持格式. */
 	public static final String PARA_SUPPORT_FORMAT = "PARA_SUPPORT_FORMAT";
 
 	/** 文件服务类. */
 	FilesService fileService;
-	
+
 	/** 超过此值将文件保存到临时目录中，否则保存在内存中. */
 	private int SIZE_THRESHOLD = 4 * 1024 * 1204;
-	
+
 	/** 临时文件夹路径. */
 	private String TEMP_REPOSITORY = "/tmp";
 
@@ -73,7 +75,7 @@ public class FileUploadServlet extends HttpServlet {
 	 *
 	 * @param request
 	 *            the request
-	 * @param resp
+	 * @param response
 	 *            the resp
 	 * @throws ServletException
 	 *             the servlet exception
@@ -81,29 +83,70 @@ public class FileUploadServlet extends HttpServlet {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String url = request.getRequestURI();
 		if (url.endsWith("/state")) {
 			// 查询上传文件状态 需要tag参数
-			queryFileUploadState(request, resp);
+			queryFileUploadState(request, response);
 		} else if (url.endsWith("/icon")) {
 			// 查询上传文件状态 需要ext参数
-			queryFileIcon(request, resp);
+			queryFileIcon(request, response);
 		} else if (url.endsWith("/query")) {
 			// 输出文件信息 需要path参数
-			queryFileData(request, resp);
+			queryFileData(request, response);
 		} else if (url.endsWith("/javascript")) {
 			// 输出文件信息 Javascript
-			queryJavascript(request, resp);
+			queryJavascript(request, response);
 		} else if (url.endsWith("/css")) {
 			// 输出文件信息 Javascript
-			queryCss(request, resp);
+			queryCss(request, response);
+		} else if (url.endsWith("/help")) {
+			// 输出文件信息 Javascript
+			queryHelp(request, response);
 		} else {
 			// 输出使用参数信息
-			queryUsage(request, resp);
+			queryUsage(request, response);
 		}
 
+	}
+
+	/**
+	 * 输出帮助文件.
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	private void queryHelp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String theme = parseQuery(request, "theme", "markdown");
+
+		String helper = Scans.readResource(FileUploadServlet.class.getPackage().getName(), "helper.md");
+		String css = "";
+		try {
+			css = Scans.readResource(FileUploadServlet.class.getPackage().getName()+".css", theme + ".css");
+		} catch (Exception e) {
+
+		}
+
+		helper = Markdowns.toHTML(helper);
+
+		StringBuilder html = new StringBuilder();
+		html.append("<!doctype html>");
+		html.append("<head>");
+		html.append("<style>");
+		html.append(css);
+		html.append("</style>");
+		html.append("</head>");
+		html.append("<body>");
+		html.append(helper);
+		html.append("</body>");
+
+		response.setHeader("Content-type", "text/html;charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html");
+		Streams.write(response.getOutputStream(), html.toString().getBytes(Charset.forName("UTF-8")));
 	}
 
 	/**
@@ -416,7 +459,9 @@ public class FileUploadServlet extends HttpServlet {
 		return v;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
 	 */
 	@Override
